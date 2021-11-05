@@ -1,0 +1,22 @@
+version: '2'
+services:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    # ports:
+      # - 9100:9100
+    environment:
+      TZ: Asia/Shanghai
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    labels:
+      org.label-schema.group: "monitoring"
+    restart: always
+    network_mode: host
